@@ -40,10 +40,11 @@
 // });
 
 
+const dotenv = require('dotenv');
+dotenv.config();
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
-const functions = require('@vercel/node');
 
 const app = express();
 
@@ -66,5 +67,5 @@ app.use('/api/auth', authRoutes);
 app.use('/api/courses', courseRoutes);
 app.use('/api/recommendations', recRoutes);
 
-// Export the Express app as a Vercel function
-module.exports = functions.app(app);
+// Export the Express app for Vercel
+module.exports = app;

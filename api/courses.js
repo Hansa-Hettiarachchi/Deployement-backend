@@ -195,7 +195,6 @@ const express = require('express');
 const auth = require('../middleware/authMiddleware');
 const Course = require('../models/Course');
 const User = require('../models/User');
-const { getCourseRecommendations } = require('../openaiClient'); // Ensure this path is correct
 const { findMatchingCourses } = require('../utils/courseUtils'); 
 const mongoose = require('mongoose');
 const app = express();
@@ -348,23 +347,6 @@ app.get('/:courseId/enrolled-students', auth, async (req, res) => {
     } catch (err) {
         console.error(err);
         res.status(500).json({ message: 'Server error' });
-    }
-});
-
-app.post('/recommendations', async (req, res) => {
-    try {
-        const { prompt } = req.body;
-        
-        const recommendationsText = await getCourseRecommendations(prompt);
-        
-        const recommendations = recommendationsText.split('\n').filter(line => line.trim().length > 0);
-        
-        const matchingCourses = await findMatchingCourses(recommendations);
-        
-        res.json(matchingCourses);
-    } catch (error) {
-        console.error('Error fetching recommendations:', error);
-        res.status(500).send('Error fetching recommendations');
     }
 });
 
